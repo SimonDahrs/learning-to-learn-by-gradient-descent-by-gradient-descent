@@ -25,12 +25,12 @@ pip install requirements.txt
 ```
 
 ## Usage
-* To reproduce the paper: simply go through the notebook `Grad_buffer.ipynb`. Note that some images not properly loaded in browser will show-up in downloaded local version.
+* To reproduce the paper (LSTM optimizer): simply go through the notebook `Grad_buffer.ipynb`. Note that some images not properly loaded in browser will show-up in downloaded local version.
 * To implement your own Learning-to-Optimize works: please feel free to use `meta_module.py`
     - `from meta_module import *`
     - Replace all `torch.nn.XXX` to `MetaXXX`, where `"XXX" is in [Module, Linear, Conv2d, ConvTranspose2d, BatchNorm2d, Sequential, ModuleList, ModuleDict]`.
     - `resnet_meta.py` is provided. Pretrained weights can be loaded. Use the meta resnet the same way you did before (e.g. `model = resnet101(pretrained=True)`).
-
+* To reproduce our GRU optimizer, run `Implementation.ipynb`.
 ## Method
 The core part to reproduce the LSTM meta optimzer is to **update the `nn.Parameters` of the optimizee in place while retaining the `grad_fn`**. In Pytorch, `nn.Parameters` are designed to be leaf nodes. The only way to modify the value of an patameter is something like `p.data.add_` (take the last line in `sgd.py` in Pytorch for an example). However, modifying `.data` of a tensor does not produce a `grad_fn`, which is vital for our meta optimizer to be upadted from. More discussions can be found in [here](https://discuss.pytorch.org/t/nn-parameter-doesnt-retain-grad-fn/29214) and [here](https://discuss.pytorch.org/t/gradient-with-respect-to-parameters-that-update-model-parameters/39141).
 
